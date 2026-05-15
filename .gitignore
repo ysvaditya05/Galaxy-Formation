@@ -15,7 +15,6 @@ env/
 *.h5
 *.npy
 *.npz
-*.csv
 
 # OS files
 .DS_Store

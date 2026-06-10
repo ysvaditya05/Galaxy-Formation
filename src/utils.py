@@ -54,6 +54,25 @@ def D(z):
     Dz = (Om_m + 0.4545*Om_lambda) / (Om_m*(1+z)**3 + 0.4545*Om_lambda)
     return Dz**(1/3)
 
+# Variance of smoothed density field (wrt radius, R)
+def sigma_R(R,z=0,cutoff=1000):    
+    # Integrand for the variance calculation
+    def integral(k):
+        return P(k,z,cutoff) * k**2 * W(k,R)**2 / (2 * np.pi**2)
+    
+    sigma2, _ = quad(integral, 0, np.inf, limit=500, epsabs=1e-5, epsrel=1e-5)
+    return np.sqrt(sigma2)
+
+
+# Variance of smoothed density field (wrt mass of region, M)
+def sigma_M(M,z=0,cutoff=1000):
+    # Compute R corresponding to the mass M
+    R = (3 * M / (4 * np.pi * rho_0))**(1/3)
+    
+    return sigma_R(R,z,cutoff)
+
+A = sigma8_obs/sigma_R(R8,0)
+
 M_range = np.logspace(6, 16, 500)  # Mass range in solar masses
 
 def poly_fit(x_arr,y_arr,degree,plot=0):

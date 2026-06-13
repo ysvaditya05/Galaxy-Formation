@@ -71,9 +71,16 @@ def sigma_M(M,z=0,cutoff=1000):
     
     return sigma_R(R,z,cutoff)
 
+# Evaluate and print the normalization factor
+R8 = 8/h      # units of Mpc
+
 A = sigma8_obs/sigma_R(R8,0)
 
 M_range = np.logspace(6, 16, 500)  # Mass range in solar masses
+
+y = [A*sigma_M(M,0,np.inf) for M in M_range]
+y_1 = [A*sigma_M(M,0,1) for M in M_range]
+y_10 = [A*sigma_M(M,0,10) for M in M_range]
 
 def poly_fit(x_arr,y_arr,degree,plot=0):
     # Perform polynomial fit
